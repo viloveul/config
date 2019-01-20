@@ -4,7 +4,7 @@ namespace Viloveul\Config\Contracts;
 
 use Viloveul\Config\Contracts\Configuration;
 
-interface Loader
+interface ConfigFactory
 {
     /**
      * @param string $filename

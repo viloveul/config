@@ -19,7 +19,7 @@ $config->setFoo('bar');
 $config->bar = 'baz';
 $config['main'] = 'item';
 
-$otherConfig = Viloveul\Config\Configuration::load('/path/to/your/config/file.php');
+$otherConfig = Viloveul\Config\ConfigFactory::load('/path/to/your/config/file.php');
 
 $anotherConfig = new Viloveul\Config\Configuration([
 	'hello' => 'world'
@@ -33,10 +33,10 @@ $anotherOtherAnotherConfig = new Viloveul\Config\Configuration([
 	'foo' => 'ssstttt'
 ]);
 
-$config = $config->merge($otherConfig);
-$config = $config->merge($anotherConfig);
-$config = $config->merge($anotherConfig, false);
-$config = $config->merge($anotherOtherAnotherConfig, true);
+$config->merge($otherConfig);
+$config->merge($anotherConfig);
+$config->merge($anotherConfig, false);
+$config->merge($anotherOtherAnotherConfig, true);
 
 var_dump($config->all());
 ```
