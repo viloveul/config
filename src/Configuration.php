@@ -3,12 +3,10 @@
 namespace Viloveul\Config;
 
 use Viloveul\Config\Contracts\Configuration as IConfiguration;
-use Viloveul\Config\Contracts\Loader as ILoader;
 use Viloveul\Config\Contracts\Mergerable as IMergerable;
 use Viloveul\Config\IllegalException;
-use Viloveul\Config\LoaderException;
 
-class Configuration implements IConfiguration, ILoader, IMergerable
+class Configuration implements IConfiguration, IMergerable
 {
     /**
      * @var array
@@ -99,33 +97,15 @@ class Configuration implements IConfiguration, ILoader, IMergerable
     }
 
     /**
-     * @param string $filename
-     */
-    public static function load(string $filename): IConfiguration
-    {
-        if (!is_file($filename)) {
-            throw new LoaderException("Filename does not exists.");
-        }
-        if (!is_readable($filename)) {
-            throw new LoaderException("Filename is not readable.");
-        }
-        $configs = include $filename;
-        return new static($configs);
-    }
-
-    /**
      * @param IConfiguration $config
      * @param bool           $overwrite
      */
     public function merge(IConfiguration $config, bool $overwrite = false): IConfiguration
     {
-        $our = clone $this;
         foreach ($config->all() as $key => $value) {
-            if ($overwrite === true || !isset($our->{$key})) {
-                $our->{$key} = $value;
-            }
+            $this->set($key, $value, $overwrite);
         }
-        return $our;
+        return $this;
     }
 
     /**
