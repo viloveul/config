@@ -15,7 +15,7 @@ require __DIR__ . '/vendor/autoload.php';
 $config = new Viloveul\Config\Configuration([
 	'key' => 'value'
 ]);
-$config->set('foo', 'bar');
+$config->setFoo('bar');
 $config->bar = 'baz';
 $config['main'] = 'item';
 

@@ -2,13 +2,13 @@
 
 namespace Viloveul\Config;
 
-use BadMethodCallException;
 use Viloveul\Config\Contracts\Configuration as IConfiguration;
 use Viloveul\Config\Contracts\Loader as ILoader;
+use Viloveul\Config\Contracts\Mergerable as IMergerable;
 use Viloveul\Config\IllegalException;
 use Viloveul\Config\LoaderException;
 
-class Configuration implements IConfiguration, ILoader
+class Configuration implements IConfiguration, ILoader, IMergerable
 {
     /**
      * @var array
@@ -16,22 +16,26 @@ class Configuration implements IConfiguration, ILoader
     private $configs = [];
 
     /**
-     * @param $key
-     * @param $subs
+     * @param  $key
+     * @param  $params
+     * @return mixed
      */
-    public function __call($key, $subs)
+    public function __call($key, $params)
     {
-        if (strpos($key, 'get') === 0) {
-            $key = strtolower(substr($key, 3, 1)) . substr($key, 4);
-            if ($this->has($key)) {
-                $sub = implode('.', $subs);
-                $configs = $this->get($key);
-                if (empty($sub) || array_key_exists($sub, $configs)) {
-                    return $sub ? $configs[$sub] : $configs;
-                }
-            }
+        $switcher = substr($key, 0, 3);
+        $value = isset($params[0]) ? $params[0] : null;
+        $name = lcfirst(substr($key, 3));
+        switch ($switcher) {
+            case 'set':
+                $this->set($name, $value);
+                break;
+            case 'get':
+                return $this->get($name, $value);
+                break;
+            default:
+                throw new BadMethodCallException("method {$key} does not exists.");
+                break;
         }
-        throw new BadMethodCallException("Config {$key} not found for direct call.");
     }
 
     /**
@@ -117,7 +121,9 @@ class Configuration implements IConfiguration, ILoader
     {
         $our = clone $this;
         foreach ($config->all() as $key => $value) {
-            $our->set($key, $value, $overwrite);
+            if ($overwrite === true || !isset($our->{$key})) {
+                $our->{$key} = $value;
+            }
         }
         return $our;
     }

@@ -8,9 +8,9 @@ interface Configuration extends ArrayAccess
 {
     /**
      * @param $key
-     * @param $subs
+     * @param $params
      */
-    public function __call($key, $subs);
+    public function __call($key, $params);
 
     /**
      * @param $key
@@ -40,12 +40,6 @@ interface Configuration extends ArrayAccess
      * @param string $key
      */
     public function has(string $key): bool;
-
-    /**
-     * @param self         $config
-     * @param $overwrite
-     */
-    public function merge(self $config, bool $overwrite = false): self;
 
     /**
      * @param $key
