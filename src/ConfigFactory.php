@@ -2,7 +2,7 @@
 
 namespace Viloveul\Config;
 
-use LoaderException;
+use Viloveul\Config\LoaderException;
 use Viloveul\Config\Configuration;
 use Viloveul\Config\Contracts\ConfigFactory as IConfigFactory;
 use Viloveul\Config\Contracts\Configuration as IConfiguration;
