@@ -6,9 +6,17 @@ class InstanceTest extends \Codeception\Test\Unit
      * @var \UnitTester
      */
     protected $tester;
+
+    protected $myConfig;
+
+    protected $myParams = [
+        'foo' => 'bar',
+        'bar' => 'baz'
+    ];
     
     protected function _before()
     {
+        $this->myConfig = new Viloveul\Config\Configuration($this->myParams);
     }
 
     protected function _after()
@@ -18,41 +26,38 @@ class InstanceTest extends \Codeception\Test\Unit
     // tests
     public function testCreateInstance()
     {
-        $params = [
-            'foo' => 'bar',
-            'bar' => 'baz'
-        ];
-        $config = new Viloveul\Config\Configuration($params);
-        $this->tester->assertEquals($params, $config->all());
+        $this->tester->assertEquals(
+            $this->myParams,
+            $this->myConfig->all()
+        );
     }
 
     public function testMerge()
     {
-        $config = new Viloveul\Config\Configuration([
-            'foo' => 'bar'
-        ]);
         $another = new Viloveul\Config\Configuration([
-            'bar' => 'baz'
+            'baz' => 'hello'
         ]);
-        $config->merge($another);
-        $this->tester->assertTrue($config->has('bar'));
+        $this->myConfig->merge($another);
+        $this->tester->assertTrue($this->myConfig->has('baz'));
+    }
+
+    public function testSetter()
+    {
+        $this->myConfig->setHello('world');
+        $this->tester->assertTrue($this->myConfig->has('hello'));
     }
 
     public function testMagicGetterAndArrayAccess()
     {
-        $config = new Viloveul\Config\Configuration([
-            'foo' => 'bar'
-        ]);
-        $this->tester->assertEquals($config->foo, $config['foo']);
+        $this->tester->assertEquals($this->myParams['foo'], $this->myConfig->getFoo());
+        $this->tester->assertEquals($this->myParams['foo'], $this->myConfig['foo']);
+        $this->tester->assertEquals($this->myParams['foo'], $this->myConfig->foo);
     }
 
     public function testCantUnsetConfig()
     {
         $this->tester->expectThrowable(Viloveul\Config\IllegalException::class, function() {
-            $config = new Viloveul\Config\Configuration([
-                'foo' => 'bar'
-            ]);
-            unset($config['foo']);
+            unset($this->myConfig['foo']);
         });
     }
 }
