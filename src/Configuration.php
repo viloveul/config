@@ -2,9 +2,9 @@
 
 namespace Viloveul\Config;
 
-use Viloveul\Config\Contracts\Configuration as IConfiguration;
-use Viloveul\Config\Contracts\Mergerable as IMergerable;
 use Viloveul\Config\IllegalException;
+use Viloveul\Config\Contracts\Mergerable as IMergerable;
+use Viloveul\Config\Contracts\Configuration as IConfiguration;
 
 class Configuration implements IConfiguration, IMergerable
 {
@@ -85,7 +85,7 @@ class Configuration implements IConfiguration, IMergerable
      */
     public function get(string $key, $default = null)
     {
-        return $this->has($key) ? $this->configs[$key] : $default;
+        return array_get($this->configs, $key, $default);
     }
 
     /**
@@ -93,7 +93,7 @@ class Configuration implements IConfiguration, IMergerable
      */
     public function has(string $key): bool
     {
-        return array_key_exists($key, $this->configs);
+        return array_has($this->configs, $key);
     }
 
     /**
