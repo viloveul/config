@@ -1,3 +1,14 @@
+<p align="center">
+<a href="https://travis-ci.com/viloveul/config">
+<img src="https://travis-ci.com/viloveul/config.svg" alt="Build Status">
+</a>
+<a href="https://packagist.org/packages/viloveul/config">
+<img src="https://poser.pugx.org/viloveul/config/d/total.svg" alt="Total Downloads">
+</a>
+<a href="https://packagist.org/packages/viloveul/config">
+<img src="https://poser.pugx.org/viloveul/config/v/stable.svg" alt="Latest Stable Version">
+</a>
+</p>
 
 # Installation
 
